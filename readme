@@ -1,0 +1,11 @@
+npm create vite@latest my-contract-app
+cd my-contract-app
+npm install
+npm install lucide-react
+npm install tailwindcss @tailwindcss/vite
+    - inside vite.config.js add
+        -- import tailwindcss from '@tailwindcss/vite'
+        -- plugins: [ react(), tailwindcss(),],
+    - inside src/App.css and src/index.css add
+        -- import @import "tailwindcss";
+        
