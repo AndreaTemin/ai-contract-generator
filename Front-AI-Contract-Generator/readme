@@ -7,5 +7,5 @@ npm install tailwindcss @tailwindcss/vite
         -- import tailwindcss from '@tailwindcss/vite'
         -- plugins: [ react(), tailwindcss(),],
     - inside src/App.css and src/index.css add
-        -- import @import "tailwindcss";
+        -- @import "tailwindcss";
         
