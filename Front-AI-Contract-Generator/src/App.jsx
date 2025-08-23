@@ -3,7 +3,7 @@ import { Play, Square, Download, Wind, AlertTriangle } from 'lucide-react';
 
 // The API endpoint for the backend service.
 // This can be changed to an elastic IP or domain name in production.
-const API_URL = 'http://127.0.0.1:8000/stream_text';
+const API_URL = 'https://gd1m7o7036.execute-api.us-east-1.amazonaws.com/stream_text';
 
 // Main App Component
 export default function App() {
