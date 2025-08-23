@@ -28,8 +28,8 @@ class Prompt(BaseModel):
 class TermsOfService:
     def __init__(self, prompt:Prompt):
         self.user_prompt = prompt.prompt
-        self.token_counter:int = 0
-        self.invocations_counter:int = 0
+        self._token_counter:int = 0
+        self._invocations_counter:int = 0
         
         genai.configure(api_key=API_KEY)
         self.model:genai.GenerativeModel = genai.GenerativeModel('gemini-2.0-flash')
@@ -40,17 +40,17 @@ class TermsOfService:
         self.messages.append({'role': 'user', 'parts': [new_prompt]})
 
         # Check token count before making the API call.
-        self.token_counter = self.model.count_tokens(self.messages).total_tokens
-        if self.token_counter > TOKEN_LIMIT:
-            logger.exception(f"token limit reached: {self.token_counter}")
-            raise Exception(f"Token limit reached: {self.token_counter}")
+        self._token_counter = self.model.count_tokens(self.messages).total_tokens
+        if self._token_counter > TOKEN_LIMIT:
+            logger.exception(f"token limit reached: {self._token_counter}")
+            raise Exception(f"Token limit reached: {self._token_counter}")
 
         # Use the asynchronous, streaming version of the API, passing the full history.
         response = self.model.generate_content(self.messages, stream=True)
-        self.invocations_executed += 1
+        self._invocations_counter += 1
         logger.info(
-            f"Invocations executed: {self.invocations_counter}"
-            f"Tokens utilized: {self.token_counter}"
+            f"Invocations executed: {self._invocations_counter}, "
+            f"Tokens utilized: {self._token_counter}"
         )
         
         # Yield chunks as they are received.
