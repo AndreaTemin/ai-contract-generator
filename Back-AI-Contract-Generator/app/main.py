@@ -1,9 +1,7 @@
-import time
-
-# Example using FastAPI
 from fastapi import FastAPI
 from fastapi.responses import StreamingResponse
 from fastapi.middleware.cors import CORSMiddleware
+from mangum import Mangum
 
 import llm_request_call_2
 
@@ -35,8 +33,12 @@ async def health():
 
 @app.post("/stream_text")
 async def stream_text(prompt: llm_request_call_2.Prompt):
+    # TODO: validate prompt somehow
+
     tos = llm_request_call_2.TermsOfService(prompt)
     return StreamingResponse(
         tos.generate_text_stream(), 
         media_type="text/html"
     )
+    
+handler = Mangum(app) 
