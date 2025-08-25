@@ -1,11 +1,11 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Play, Square, Download, Wind, AlertTriangle } from 'lucide-react';
 
-// The API endpoint for the backend service.
+        // The base URL for the backend service.
 // This can be changed to an elastic IP or domain name in production.
-// const API_URL = 'https://gd1m7o7036.execute-api.us-east-1.amazonaws.com/stream_text';
-// const API_URL = 'http://ai-contract-alb-1009035318.us-east-1.elb.amazonaws.com/stream_text';
-const API_URL = import.meta.env.VITE_API_URL;
+// const API_BASE_URL = 'https://gd1m7o7036.execute-api.us-east-1.amazonaws.com';
+// const API_BASE_URL = 'http://ai-contract-alb-1009035318.us-east-1.elb.amazonaws.com';
+const API_BASE_URL = import.meta.env.VITE_API_URL;
 
 // Main App Component
 export default function App() {
@@ -34,7 +34,7 @@ export default function App() {
         abortControllerRef.current = new AbortController();
 
         try {
-            const response = await fetch(API_URL, {
+            const response = await fetch(`${API_BASE_URL}/stream_text`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
