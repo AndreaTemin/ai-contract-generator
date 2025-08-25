@@ -35,11 +35,11 @@ app.add_middleware(
 async def health():
     return {
         "status": "ok",
-        "version": 0.1
+        "version": 0.2
         }
 
 
-@app.post("/stream_text")
+@app.post("/api/stream_text")
 async def stream_text(prompt: llm_request_call_2.Prompt):
     # https://github.com/awslabs/aws-lambda-web-adapter/blob/main/examples/fastapi-response-streaming/app/main.py
     

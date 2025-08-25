@@ -34,7 +34,7 @@ export default function App() {
         abortControllerRef.current = new AbortController();
 
         try {
-            const response = await fetch(`${API_BASE_URL}/stream_text`, {
+            const response = await fetch(`${API_BASE_URL}/api/stream_text`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
