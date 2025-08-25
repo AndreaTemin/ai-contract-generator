@@ -1,0 +1,8 @@
+{
+  "rewrites": [
+    {
+      "source": "/api/:path*",
+      "destination": "http://<YOUR_ALB_DNS_NAME>/:path*"
+    }
+  ]
+}
