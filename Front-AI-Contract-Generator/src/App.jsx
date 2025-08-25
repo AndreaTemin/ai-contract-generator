@@ -65,7 +65,7 @@ export default function App() {
         } catch (err) {
             // If the error is an AbortError, it's an expected cancellation, so we don't set an error state.
             if (err.name !== 'AbortError') {
-                setError('Failed to connect to the generator service. Please ensure it is running and accessible.');
+                setError('Failed to connect to the generator service. Please try again later.');
                 console.error(err);
             }
         } finally {
@@ -100,7 +100,6 @@ export default function App() {
                 </style>
             </head>
             <body>
-                <h1>Terms of Service</h1>
                 ${generatedHtml}
             </body>
             </html>
