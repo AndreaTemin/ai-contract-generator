@@ -32,7 +32,7 @@ class TermsOfService:
         self._invocations_counter:int = 0
         
         genai.configure(api_key=API_KEY)
-        self.model:genai.GenerativeModel = genai.GenerativeModel('gemini-2.0-flash')
+        self.model:genai.GenerativeModel = genai.GenerativeModel('gemini-2.5-flash')
         self.messages = []
         
     def _execute_query_stream(self, new_prompt: str):
