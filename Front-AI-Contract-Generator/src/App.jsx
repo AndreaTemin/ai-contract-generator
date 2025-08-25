@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Play, Square, Download, Wind, AlertTriangle } from 'lucide-react';
 
-        // The base URL for the backend service.
+// The base URL for the backend service.
 // This can be changed to an elastic IP or domain name in production.
 // const API_BASE_URL = 'https://gd1m7o7036.execute-api.us-east-1.amazonaws.com';
 // const API_BASE_URL = 'http://ai-contract-alb-1009035318.us-east-1.elb.amazonaws.com';

@@ -35,7 +35,7 @@ app.add_middleware(
 async def health():
     return {
         "status": "ok",
-        "version": 0.2
+        "version": "0.1.1"
         }
 
 
