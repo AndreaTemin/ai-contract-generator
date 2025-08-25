@@ -1,15 +1,25 @@
 import google.generativeai as genai
 import os
+import logging
 
+from aws_lambda_powertools.utilities.parameters import get_secret
 from pydantic import BaseModel
+
+logger = logging.getLogger(__name__)
+logger.setLevel(os.getenv("LOG_LEVEL", "DEBUG"))
 
 END_OF_TEXT = ""
 TOKEN_LIMIT = 100000
 
-API_KEY = os.getenv("GEMINI_API_KEY") 
-if not API_KEY:
-    print("Error: GOOGLE_API_KEY environment variable not set.")
-    exit()
+try:
+    API_KEY = get_secret("ai-contract-generator-keys", transform='json')['GEMINI_API_KEY']
+    logger.info("GEMINI_API_KEY fetched from AWS")
+except Exception as e:
+    API_KEY = os.getenv("GEMINI_API_KEY") 
+    logger.info("GEMINI_API_KEY fetched from envirnoment variable")
+    if not API_KEY:
+        logger.error("GEMINI_API_KEY was not found")
+        exit()
 
 
 class Prompt(BaseModel):
@@ -18,7 +28,8 @@ class Prompt(BaseModel):
 class TermsOfService:
     def __init__(self, prompt:Prompt):
         self.user_prompt = prompt.prompt
-        self.token_counter:int = 0
+        self._token_counter:int = 0
+        self._invocations_counter:int = 0
         
         genai.configure(api_key=API_KEY)
         self.model:genai.GenerativeModel = genai.GenerativeModel('gemini-2.0-flash')
@@ -29,13 +40,19 @@ class TermsOfService:
         self.messages.append({'role': 'user', 'parts': [new_prompt]})
 
         # Check token count before making the API call.
-        self.token_counter = self.model.count_tokens(self.messages).total_tokens
-        if self.token_counter > TOKEN_LIMIT:
-            raise Exception(f"Token limit reached: {self.token_counter}")
+        self._token_counter = self.model.count_tokens(self.messages).total_tokens
+        if self._token_counter > TOKEN_LIMIT:
+            logger.exception(f"token limit reached: {self._token_counter}")
+            raise Exception(f"Token limit reached: {self._token_counter}")
 
         # Use the asynchronous, streaming version of the API, passing the full history.
         response = self.model.generate_content(self.messages, stream=True)
-
+        self._invocations_counter += 1
+        logger.info(
+            f"Invocations executed: {self._invocations_counter}, "
+            f"Tokens utilized: {self._token_counter}"
+        )
+        
         # Yield chunks as they are received.
         for chunk in response:
             yield chunk.text
@@ -96,7 +113,7 @@ const MOCK_CONTRACT_SECTIONS = [
             """
 
         for chunk in self._execute_query_stream(intro_prompt):
-            chunk = chunk.removeprefix('``` html').removesuffix('```')
+            chunk = chunk.removeprefix('```html').removesuffix('```')
             yield chunk
         
         # execute for each query for each point
@@ -115,7 +132,7 @@ const MOCK_CONTRACT_SECTIONS = [
                     • https://www.zoom.com/en/trust/terms/ 
                 """
             for chunk in self._execute_query_stream(second_prompt):
-                # chunk = chunk.removeprefix('```html').removesuffix('```')
+                chunk = chunk.removeprefix('```html').removesuffix('```')
                 yield chunk
 
         yield END_OF_TEXT
