@@ -1,11 +1,10 @@
 from fastapi import FastAPI
 from fastapi.responses import StreamingResponse
 from fastapi.middleware.cors import CORSMiddleware
-from mangum import Mangum
 
 import logging
 
-import uvicorn
+
 import llm_request_call_2
 
 logger = logging.getLogger(__name__)
@@ -53,4 +52,4 @@ async def stream_text(prompt: llm_request_call_2.Prompt):
         media_type="text/html"
     )
     
-handler = Mangum(app) 
+    
