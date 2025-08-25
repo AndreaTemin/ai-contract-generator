@@ -1,8 +1,8 @@
 {
   "rewrites": [
     {
-      "source": "/api/:path*",
-      "destination": "http://ai-contract-alb-1009035318.us-east-1.elb.amazonaws.com/:path*"
+      "source": "/api/stream_text",
+      "destination": "http://ai-contract-alb-1009035318.us-east-1.elb.amazonaws.com/api/stream_text"
     }
   ]
 }
