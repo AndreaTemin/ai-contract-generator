@@ -9,3 +9,4 @@ npm install tailwindcss @tailwindcss/vite
     - inside src/App.css and src/index.css add
         -- @import "tailwindcss";
         
+npm install dompurify
