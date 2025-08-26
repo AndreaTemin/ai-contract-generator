@@ -43,9 +43,6 @@ Backend (AWS Fargate)
 
 The GEMINI_API_KEY is securely stored as an environment variable on the backend.
 
-### **P.S.** To be noted that no DNS has been defined for the backend even though the frontend is, as it is hosted on Vercel. To allow the frontend to access the backend without incur on a Mixed Content error you need to allow page to access an insicure(http) api.
-Please follow this url: https://github.com/vercel/vercel/discussions/5287 and follow the instruction of the 3rd comment, user: `njzydark`
-
 
 ---
 ## Getting Started
