@@ -76,7 +76,6 @@ class TermsOfServiceGenerator:
     async def generate_text_stream_two_steps(self):
         # Step 1: Get titles
         try:
-            Exception()
             titles = await self._get_section_titles()
         except Exception as e:
             logger.error(f"Failed to generate titles: {e}")
@@ -88,7 +87,7 @@ class TermsOfServiceGenerator:
         yield json.dumps({"skeleton": skeleton}) + "\n"
 
         # Step 2: Concurrently generate and stream content for all sections
-            
+        content_generation_tasks = [self._generate_section_content_stream(title, titles, i + 1) for i, title in enumerate(titles)]
 
         # Use a queue to yield results as they complete, not in a fixed order
         q = asyncio.Queue()
