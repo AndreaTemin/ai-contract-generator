@@ -38,7 +38,7 @@ async def health():
 
 @app.post("/api/generate_tos_points")
 async def stream_text(prompt: Prompt):
-    logger.debug("/stream_text (Two-Step) has started")
+    logger.debug("/api/generate_tos_points has started")
     tos = TermsOfServiceGenerator(prompt)
     
     # Use the new two-step generator

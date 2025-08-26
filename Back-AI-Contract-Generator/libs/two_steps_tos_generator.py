@@ -25,7 +25,7 @@ class TermsOfServiceGenerator:
         
         # LLM for generating titles - can be a faster model
         self.title_llm = ChatGoogleGenerativeAI(
-            model="gemini-2.0-flash", # Use a faster model for titles
+            model="gemini-2.5-flash-lite", # Use a faster model for titles
             google_api_key=GEMINI_API_KEY,
             temperature=0.0
         )
@@ -57,7 +57,7 @@ class TermsOfServiceGenerator:
             You are writing one part of a larger Terms of Service document for the business: '{self.user_prompt}'.
             The complete document structure is: {all_titles}.
 
-            Your task is to write **only the content** for the section titled: **'{title}'**.
+            Your task is to write only the content for the section titled: '{title}'.
 
             Ensure your writing is contextually aware of the other sections.
             Don't use names, addresses, or other identifying information unless specified in the document, use placeholders instead.
@@ -74,9 +74,9 @@ class TermsOfServiceGenerator:
             }) + "\n" # Newline delimiter for the stream
 
     async def generate_text_stream_two_steps(self):
-        """Orchestrates the two-step streaming process."""
         # Step 1: Get titles
         try:
+            Exception()
             titles = await self._get_section_titles()
         except Exception as e:
             logger.error(f"Failed to generate titles: {e}")
@@ -88,10 +88,7 @@ class TermsOfServiceGenerator:
         yield json.dumps({"skeleton": skeleton}) + "\n"
 
         # Step 2: Concurrently generate and stream content for all sections
-        content_generation_tasks = [
-            self._generate_section_content_stream(title, titles, i + 1)
-            for i, title in enumerate(titles)
-        ]
+            
 
         # Use a queue to yield results as they complete, not in a fixed order
         q = asyncio.Queue()
