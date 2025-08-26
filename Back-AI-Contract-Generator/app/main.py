@@ -2,10 +2,9 @@ from fastapi import FastAPI
 from fastapi.responses import StreamingResponse
 from fastapi.middleware.cors import CORSMiddleware
 
+from libs.two_steps_tos_generator import TermsOfServiceGenerator, Prompt
+
 import logging
-
-
-import llm_request_call_2
 
 logger = logging.getLogger(__name__)
 logger.setLevel("DEBUG")
@@ -13,20 +12,18 @@ logger.setLevel("DEBUG")
 
 app = FastAPI()
 
-# not used
 origins = [
     "http://localhost.tiangolo.com",
     "https://localhost.tiangolo.com",
-    "http://localhost",
-    "http://localhost:8080",
+    "https://ai-contract-generator-bice.vercel.app",
     "http://localhost:5173",
 ]
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"], #origins,
+    allow_origins=origins,
     allow_credentials=True,
-    allow_methods=["*"],
+    allow_methods=["POST","OPTIONS","GET"],
     allow_headers=["*"],
 )
     
@@ -35,21 +32,18 @@ app.add_middleware(
 async def health():
     return {
         "status": "ok",
-        "version": "0.1.1"
+        "version": "2.0.0"
         }
 
 
-@app.post("/api/stream_text")
-async def stream_text(prompt: llm_request_call_2.Prompt):
-    # https://github.com/awslabs/aws-lambda-web-adapter/blob/main/examples/fastapi-response-streaming/app/main.py
+@app.post("/api/generate_tos_points")
+async def stream_text(prompt: Prompt):
+    logger.debug("/stream_text (Two-Step) has started")
+    tos = TermsOfServiceGenerator(prompt)
     
-    # TODO: validate prompt somehow
-    logger.debug("/stream_text has started")
-    tos = llm_request_call_2.TermsOfService(prompt)
-    
+    # Use the new two-step generator
     return StreamingResponse(
-        tos.generate_text_stream(), 
-        media_type="text/html"
+        tos.generate_text_stream_two_steps(), 
+        media_type="application/x-ndjson" # Use newline-delimited JSON
     )
-    
     

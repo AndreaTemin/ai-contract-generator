@@ -29,7 +29,7 @@ RUN pip install --no-cache-dir --upgrade -r /code/requirements.txt
 
 # Copy your application code
 COPY ./app /code/app
-COPY ./llm_request_call_2.py /code/
+COPY ./llm_request_call.py /code/
 
 # Command to run the Uvicorn server when the container starts
 # It will listen on all network interfaces (0.0.0.0) on port 8000
