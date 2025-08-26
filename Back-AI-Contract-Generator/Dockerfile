@@ -29,9 +29,7 @@ RUN pip install --no-cache-dir --upgrade -r /code/requirements.txt
 
 # Copy your application code
 COPY ./app /code/app
-COPY ./llm_request_call.py /code/
+COPY ./libs/two_steps_tos_generator.py /code/libs/two_steps_tos_generator.py
 
-# Command to run the Uvicorn server when the container starts
-# It will listen on all network interfaces (0.0.0.0) on port 8000
 CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
 

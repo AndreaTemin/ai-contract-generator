@@ -60,6 +60,8 @@ class TermsOfServiceGenerator:
             Your task is to write **only the content** for the section titled: **'{title}'**.
 
             Ensure your writing is contextually aware of the other sections.
+            Don't use names, addresses, or other identifying information unless specified in the document, use placeholders instead.
+
             The output must be well-structured HTML using <p>, <h3>, etc. Do not repeat the section title in your response.
         """
         messages = [HumanMessage(content=prompt)]
