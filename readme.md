@@ -106,11 +106,6 @@ git clone https://github.com/AndreaTemin/ai-contract-generator.git
     npm install dompurify
     ```
 
-2.  **Install the required dependencies:**
-    ```bash
-    npm install
-    ```
-
 3.  **Set up your environment variables:**
     Create a `.env` file in the `Front-AI-Contract-Generator` directory and point it to your running backend:
     ```
@@ -122,3 +117,21 @@ git clone https://github.com/AndreaTemin/ai-contract-generator.git
     npm run dev
     ```
     The frontend application will now be available at `http://localhost:5173`.
+
+
+---
+
+## Future development:
+### Frontend
+- improve overall ux
+- Add more features:
+    - The possibility to specify which llm to use
+    - Add context relative to the sections to add
+    - The possiblity to modify the already generated contract
+    - share a file to be used as context for the contract
+### Backend:
+- Define a DNS for the backend server
+- Set a login system to define who and in what measure a user can access to the service
+- Set a databse to keep track of the users data for analytic purpose
+- keep track of the amount of token utilized by users
+- Add a security layer to the api like Auth0 authentication
